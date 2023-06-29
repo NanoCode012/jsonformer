@@ -16,7 +16,7 @@ class StringStoppingCriteria(StoppingCriteria):
             return False
 
         last_token_id = input_ids[0][-1]
-        last_token = self.tokenizer.decode(last_token_id, skip_special_tokens=True)
+        last_token = self.tokenizer.decode([last_token_id], skip_special_tokens=True)
 
         result = '"' in last_token
 
@@ -69,7 +69,7 @@ class OutputNumbersTokens(LogitsWarper):
         self.allowed_mask = torch.zeros(vocab_size, dtype=torch.bool)
 
         for _, token_id in tokenizer.get_vocab().items():
-            token_str = tokenizer.decode(token_id).strip()
+            token_str = tokenizer.decode([token_id]).strip()
 
             if token_str == "" or (
                 all(c.isdigit() or c == "." for c in token_str)
